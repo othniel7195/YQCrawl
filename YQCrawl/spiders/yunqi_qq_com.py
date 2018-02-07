@@ -62,22 +62,12 @@ class YunqiQqComSpider(CrawlSpider):
         book_id = response.meta["book_id"]
         book_label = response.xpath("//div[@class='tags']/text()").extract_first()
         print "book_label: %s" % book_label
-        novel_info = response.xpath("//div[@id='novelInfo']/table/*/tr")
-        print "novel_info: %s" % novel_info
-
-        if len(novel_info) > 3:
-            book_all_click = novel_info[1].xpath("./td/text()").extract_first()
-            print "book_all_click: %s" % book_all_click
-            book_month_click = novel_info[2].xpath("./td/text()").extract_first()
-            print "book_month_click: %s" % book_all_click
-            book_week_click = novel_info[3].xpath("./td/text()").extract_first()
-            print "book_week_click :%s" % book_week_click
-        else:
-            print "获取点击量失败"
-            book_all_click = "0"
-            book_month_click = "0"
-            book_week_click = "0"
-
+        book_all_click = response.xpath("//*[@id ='novelInfo']/table/tr[2]/td[1]/text()").extract_first()
+        print "book_all_click: %s" % book_all_click
+        book_month_click = response.xpath("//*[@id ='novelInfo']/table/tr[3]/td[1]/text()").extract_first()
+        print "book_month_click: %s" % book_all_click
+        book_week_click = response.xpath("//*[@id ='novelInfo']/table/tr[4]/td[1]/text()").extract_first()
+        print "book_week_click :%s" % book_week_click
         book_detail_item = YqBookDetailItem(book_id=book_id, book_label=book_label, book_all_click=book_all_click,
                                             book_week_click=book_week_click, book_month_click=book_month_click)
         yield book_detail_item
